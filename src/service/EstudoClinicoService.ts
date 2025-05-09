@@ -24,3 +24,4 @@ export class EstudoClinicoService {
     async deletarEstudo(id: number) {
         await this.estufoRepo.delete(id);
     }
+}

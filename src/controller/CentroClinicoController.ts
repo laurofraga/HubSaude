@@ -2,15 +2,18 @@ import { Request, Response } from "express";
 import { CentroClinicoService } from "../service/CentroClinicoService";
 
 const sevice = new CentroClinicoService();
-export const listarCentroClinicos = async (req: Request, res: Response) => {
+
+export class CentroClinicoController {
+
+    static listarCentroClinicos = async (req: Request, res: Response) => {
     try {
         const centroClinicos = await sevice.getCentroClinicos();
         res.status(200).json(centroClinicos);
     } catch (error) {
         res.status(500).json({ message: "Erro ao listar centros clínicos", error });
     }
-}
-export const criarCentroClinico = async (req: Request, res: Response) => {
+    }
+    static criarCentroClinico = async (req: Request, res: Response) => {
     try {
         const { nome, endereco, telefone } = req.body;
         const centroClinico = await sevice.createCentroClinico(nome, endereco, telefone);
@@ -18,8 +21,9 @@ export const criarCentroClinico = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ message: "Erro ao criar centro clínico", error });
     }
-}
-export const atualizarCentroClinico = async (req: Request, res: Response) => {
+    }
+    
+    static atualizarCentroClinico = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { nome, endereco, telefone } = req.body;
@@ -34,7 +38,7 @@ export const atualizarCentroClinico = async (req: Request, res: Response) => {
         }
     }
 
-export const deletarCentroClinico = async (req: Request, res: Response) => {
+    static deletarCentroClinico = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         await sevice.deleteCentroClinico(parseInt(id));
@@ -42,4 +46,5 @@ export const deletarCentroClinico = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ message: "Erro ao deletar centro clínico", error });
     }       
+    }
 }

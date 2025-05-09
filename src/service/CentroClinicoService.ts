@@ -2,6 +2,7 @@ import { AppDataSource } from "../../data-source";
 import { CentroClinico } from "../model/CentroClinico";
 
 export class CentroClinicoService{
+    
     private centroClinicoRepository = AppDataSource.getRepository(CentroClinico);
 
     async createCentroClinico(nome: string, endereco: string, telefone: string): Promise<CentroClinico> {

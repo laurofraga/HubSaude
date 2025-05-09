@@ -1,5 +1,5 @@
 import { AppDataSource } from "../../data-source";
-import { Paciente } from "../entity/Paciente";
+import { Paciente } from "../model/Paciente";
 import {bcpryt} from "bcryptjs";
 
 

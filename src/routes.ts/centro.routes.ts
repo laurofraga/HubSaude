@@ -1,11 +1,11 @@
 import { Router } from "express";
-import {criarCentroClinico, listarCentroClinicos, atualizarCentroClinico, deletarCentroClinico  } from "../controller/CentroClinicoController";
+import { CentroClinicoController } from "../controller/CentroClinicoController";
 
 const router = Router();
 
-router.get("/", listarCentroClinicos);
-router.post("/", criarCentroClinico);
-router.put("/:id", atualizarCentroClinico);
-router.delete("/:id", deletarCentroClinico);
+router.get("/", CentroClinicoController.listarCentroClinicos);
+router.post("/", CentroClinicoController.criarCentroClinico);   
+router.put("/:id", CentroClinicoController.atualizarCentroClinico);
+router.delete("/:id", CentroClinicoController.deletarCentroClinico);
 
 export default router;
