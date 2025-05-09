@@ -1,17 +1,17 @@
 import  "reflect-metadata";
 import { DataSource } from "typeorm";
-import {CentroClinico} from "./src/model/CentroClinico"
-import{EstudoClinico} from "./src/model/EstudoClinico";
-import {Paciente} from "./src/model/Paciente";
-import {ParticipacaoEstudoClinico} from "./src/model/ParticipacaoEstudo";
+import {CentroClinico} from "./model/CentroClinico"
+import{EstudoClinico} from "./model/EstudoClinico";
+import {Paciente} from "./model/Paciente";
+import {ParticipacaoEstudoClinico} from "./model/ParticipacaoEstudo";
 
 export const AppDataSource = new DataSource({
     type : "postgres",
     host : "localhost",
     port :5432,
     username : "postgres",
-    password: "postgres",
-    database: "clinica",
+    password: "lauro1234",
+    database: "HubSaude",
     synchronize: true,
     logging: false,
     entities: [CentroClinico, EstudoClinico, Paciente, ParticipacaoEstudoClinico],

@@ -1,6 +1,6 @@
-import { AppDataSource } from "../../data-source";
+import { AppDataSource } from "../data-source";
 import { Paciente } from "../model/Paciente";
-import {bcpryt} from "bcryptjs";
+import * as bcrypt from 'bcryptjs';
 
 
 export class PacienteService {
@@ -19,7 +19,10 @@ export class PacienteService {
         if(pacienteExistente){
             throw new Error("Paciente já cadastrado com esse email.");
         }
-        paciente.senha = await bcpryt.hash(paciente.senha, 10);
+        if (!paciente.senha) {
+            throw new Error("Senha é obrigatória.");
+        }
+        paciente.senha = await bcrypt.hash(paciente.senha, 10);
         return await this.repo.save(paciente);
     }
 

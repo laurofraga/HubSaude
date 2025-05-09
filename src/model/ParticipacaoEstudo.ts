@@ -19,20 +19,20 @@ export enum StatusParticipacao {
 @Entity()
 export class ParticipacaoEstudoClinico {
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @ManyToOne(() => EstudoClinico, (estudoClinico) => estudoClinico.participacoes, {onDelete: "CASCADE"})
-    estudoClinico: EstudoClinico;
+    estudoClinico?: EstudoClinico;
 
     @ManyToOne(() => Paciente, (paciente) => paciente.participacoes, {onDelete: "CASCADE"})
-    paciente: Paciente;
+    paciente?: Paciente;
 
     @Column()
-    status: StatusParticipacao;
+    status?: StatusParticipacao;
 
     @CreateDateColumn({ type: 'timestamp' })
-    dataParticipacao: Date;
+    dataParticipacao?: Date;
 
     @UpdateDateColumn({ type: 'timestamp' })
-    dataAtualizacao: Date;
+    dataAtualizacao?: Date;
 }

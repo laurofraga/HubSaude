@@ -12,28 +12,28 @@ export enum FaseEstudo{
 @Entity()
 export class EstudoClinico {
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
     
     @Column()
-    titulo: string;
+    titulo?: string;
 
     @Column("text")
-    descricao: string,
+    descrica?: string;
 
     @Column({type: "enum", enum: FaseEstudo})
-    fase: FaseEstudo;
+    fase?: FaseEstudo;
 
     @Column()
-    dataInicio: Date;
+    dataInicio?: Date;
 
     @Column()
-    dataFim: Date;
+    dataFim?: Date;
 
     @ManyToOne(() => CentroClinico, (centroClinico) => centroClinico.estudosClinicos)
-    centroClinico: CentroClinico;
+    centroClinico?: CentroClinico;
 
 
     @OneToMany(() => ParticipacaoEstudoClinico, participacao => participacao.estudoClinico)
-    participacoes: ParticipácaoEstudoClinico[];
+    participacoes?: ParticipacaoEstudoClinico[];
 
 }

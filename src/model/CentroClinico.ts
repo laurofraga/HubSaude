@@ -1,20 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany  } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { EstudoClinico } from "./EstudoClinico";
 
 @Entity()
 export class CentroClinico {
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column()
-    nome: string;
+    nome?: string ;
 
     @Column()
-    endereco: string;
+    endereco?: string;
 
     @Column()
-    telefone: string;
+    telefone?: string;
 
     @OneToMany(() => EstudoClinico, (estudoClinico) => estudoClinico.centroClinico)
-    estudosClinicos: EstudoClinico[];
+    estudosClinicos?: EstudoClinico[];
 }

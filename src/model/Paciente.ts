@@ -10,31 +10,31 @@ export enum Sexo {
 @Entity()
 export class Paciente {
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column()
-    nome: string;
+    nome?: string;
 
     @Column()
-    idade: number;
+    idade?: number;
 
     @Column()
-    sexo:Sexo;
+    sexo?:Sexo;
 
     @Column()
-    email: string;
+    email?: string;
 
     @Column()
-    senha: string;
+    senha?: string;
 
     @Column()
-    condicoes: string;
+    condicoes?: string;
 
     @Column()
-    endereco: string;
+    endereco?: string;
 
 
     @OneToMany(() => ParticipacaoEstudoClinico, participacao => participacao.paciente)
-    participacoes: ParticipacaoEstudoClinico[];
+    participacoes?: ParticipacaoEstudoClinico[];
 }
 

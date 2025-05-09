@@ -1,4 +1,4 @@
-import { AppDataSource } from "../../data-source";
+import { AppDataSource } from "../data-source";
 import { EstudoClinico } from "../model/EstudoClinico";
 
 export class EstudoClinicoService {
