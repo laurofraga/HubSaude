@@ -40,7 +40,7 @@ Desenvolver uma plataforma web que integre centros de pesquisa e pacientes para 
 ## Stack Tecnológico
 
 #### Backend
-- Node.js com TypeScrip
+- Node.js com TypeScript
 - Express
 - TypeORM
 - PostgreSQL
