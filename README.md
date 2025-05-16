@@ -7,7 +7,7 @@ A proposta do projeto é desenvolver o Hub da Saúde, uma plataforma web que cen
 
 Essa solução facilita o recrutamento e o gerenciamento de estudos clínicos, promovendo agilidade, transparência e inclusão, além de fortalecer a ponte entre ciência e sociedade.
 
-## Definição do Porblema
+## Definição do Problema
 
 A realização de estudos clínicos enfrenta diversas dificuldades operacionais e logísticas no Brasil. O recrutamento de pacientes, por exemplo, ainda é realizado de maneira artesanal, com uso de planilhas, contatos diretos e processos manuais, o que gera atrasos e alto custo.
 
@@ -71,7 +71,7 @@ Desenvolver uma plataforma web que integre centros de pesquisa e pacientes para 
 A solução será implementada utilizando a arquitetura MVC (Model-View-Controller) e segue o padrão RESTful na API.
 
 #### Camadas
--Model: Representa as entidades do sistema 
+- Model: Representa as entidades do sistema 
 - Controller: Regras de negócio e endpoints.
 - Service: Lógica intermediária e validações.
 - Repository (via TypeORM): Persistência de dados.
