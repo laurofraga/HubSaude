@@ -1,13 +1,15 @@
 import { Router } from "express";
 import { ParticipacaoEstudoController } from "../controller/ParticipacaoEstudoController";
+import { ParticipacaoEstudoService } from "../service/ParticipacaoEstudoService";
 
 const router = Router();
-const controller = new ParticipacaoEstudoController();
+const service = new ParticipacaoEstudoService();
+const controller = new ParticipacaoEstudoController(service);
 
-router.get("/", controller.listarParticipacoes.bind);
-router.post("/", controller.criarParticipacao.bind);
-router.get("/:id", controller.buscarParticipacaoPorId.bind);
-router.put("/:id", controller.atualizarParticipacao.bind);
-router.delete("/:id", controller.deletarParticipacao.bind);
+router.get('/', controller.listarParticipacoes);
+router.get('/:id', controller.buscarParticipacaoPorId);
+router.post('/', controller.criarParticipacao);
+router.put('/:id', controller.atualizarParticipacao);
+router.delete('/:id', controller.deletarParticipacao);
 
 export default router;

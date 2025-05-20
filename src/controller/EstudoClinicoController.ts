@@ -15,7 +15,7 @@ export class EstudoClinicoController {
 
     buscarEstudoPorId = async (req: Request, res: Response): Promise<void> => {
     try {
-      const estudo = await this.service.buscarEstudoPorId(Number(req.params.id));
+      const estudo = await this.service.buscarPorId(Number(req.params.id));
       res.status(200).json(estudo);
     } catch (err: any) {
       res.status(404).json({ error: err.message || 'Estudo clínico não encontrado.' });
