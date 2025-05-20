@@ -4,47 +4,57 @@ import { CentroClinicoService } from "../service/CentroClinicoService";
 const sevice = new CentroClinicoService();
 
 export class CentroClinicoController {
+    constructor(private service: CentroClinicoService) {}
 
-    static listarCentroClinicos = async (req: Request, res: Response) => {
+     listarCentros = async (_req: Request, res: Response): Promise<void> => {
     try {
-        const centroClinicos = await sevice.getCentroClinicos();
-        res.status(200).json(centroClinicos);
-    } catch (error) {
-        res.status(500).json({ message: "Erro ao listar centros clínicos", error });
+      const centros = await this.service.getCentroClinicos();
+      res.status(200).json(centros);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Erro ao listar centros clínicos.' });
     }
-    }
-    static criarCentroClinico = async (req: Request, res: Response) => {
+  };
+
+  buscarCentroPorId = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { nome, endereco, telefone } = req.body;
-        const centroClinico = await sevice.createCentroClinico(nome, endereco, telefone);
-        res.status(201).json(centroClinico);
-    } catch (error) {
-        res.status(500).json({ message: "Erro ao criar centro clínico", error });
+      const centro = await this.service.getCentroClinicoById(Number(req.params.id));
+      res.status(200).json(centro);
+    } catch (err: any) {
+      res.status(404).json({ error: err.message || 'Centro clínico não encontrado.' });
     }
+  };
+  
+   criarCentro = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { nome, endereco, telefone } = req.body;
+      const novoCentro = await this.service.createCentroClinico(nome, endereco, telefone);
+      res.status(201).json(novoCentro);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
     }
+  };
     
-    static atualizarCentroClinico = async (req: Request, res: Response) => {
+    atualizarCentro = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
-        const { nome, endereco, telefone } = req.body;
-        const centroClinico = await sevice.updateCentroClinico(parseInt(id), nome, endereco, telefone);
-        if (centroClinico) {
-            res.status(200).json(centroClinico);
-        } else {
-            res.status(404).json({ message: "Centro clínico não encontrado" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Erro ao atualizar centro clínico", error });
-        }
+      const { nome, endereco, telefone } = req.body;
+      const centroAtualizado = await this.service.updateCentroClinico(
+        Number(req.params.id),
+        nome,
+        endereco,
+        telefone
+      );
+      res.status(200).json(centroAtualizado);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
     }
+  };
 
-    static deletarCentroClinico = async (req: Request, res: Response) => {
+    deletarCentro = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
-        await sevice.deleteCentroClinico(parseInt(id));
-        res.status(204).send();
-    } catch (error) {
-        res.status(500).json({ message: "Erro ao deletar centro clínico", error });
-    }       
+      await this.service.deleteCentroClinico(Number(req.params.id));
+      res.status(204).send();
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
     }
+  };
 }

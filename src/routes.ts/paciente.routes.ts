@@ -1,9 +1,10 @@
 
 import { Router } from "express";
 import { PacienteController } from "../controller/PacienteController";
+import { PacienteService } from "../service/PacienteService";
 
 const router = Router();
-const controller = new PacienteController();
+const controller = new PacienteController(new PacienteService());
 
 router.get("/", controller.listarPacientes);
 router.get("/:id", controller.buscarPacientePorId);
