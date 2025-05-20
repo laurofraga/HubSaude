@@ -22,7 +22,6 @@ export class ParticipacaoEstudoService {
         });
     }
 
-
     async atualizarParticipacao(id: number, participacao: Partial<ParticipacaoEstudoClinico>) {
         await this.repo.update(id, participacao);
         return await this.buscarParticipacaoPorId(id);

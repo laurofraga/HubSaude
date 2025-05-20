@@ -21,18 +21,18 @@ export class ParticipacaoEstudoClinico {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @ManyToOne(() => EstudoClinico, (estudoClinico) => estudoClinico.participacoes, {onDelete: "CASCADE"})
-    estudoClinico?: EstudoClinico;
+    @ManyToOne(() => EstudoClinico, (estudoClinico) => estudoClinico.participacoes, {onDelete: "CASCADE", eager: false, nullable: false })
+    estudoClinico!: EstudoClinico;
 
-    @ManyToOne(() => Paciente, (paciente) => paciente.participacoes, {onDelete: "CASCADE"})
-    paciente?: Paciente;
+    @ManyToOne(() => Paciente, (paciente) => paciente.participacoes, {onDelete: "CASCADE", eager: false, nullable: false })
+    paciente!: Paciente;
 
-    @Column()
+    @Column({ type: "enum", enum: StatusParticipacao, enumName: "status_participacao_enum" })
     status?: StatusParticipacao;
 
     @CreateDateColumn({ type: 'timestamp' })
-    dataParticipacao?: Date;
+    dataParticipacao!: Date;
 
     @UpdateDateColumn({ type: 'timestamp' })
-    dataAtualizacao?: Date;
+    dataAtualizacao!: Date;
 }
