@@ -15,8 +15,13 @@ export class ParticipacaoEstudoService {
     }
 
     async criarParticipacao(participacao: ParticipacaoEstudoClinico) {
-        return await this.repo.save(participacao);
+        const novaParticipacao = await this.repo.save(participacao);
+        return await this.repo.findOne({
+            where: { id: novaParticipacao.id },
+            relations: ["estudoClinico", "paciente"]
+        });
     }
+
 
     async atualizarParticipacao(id: number, participacao: Partial<ParticipacaoEstudoClinico>) {
         await this.repo.update(id, participacao);
