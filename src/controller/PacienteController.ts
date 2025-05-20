@@ -1,60 +1,68 @@
 import { Request, Response } from 'express';
 import { PacienteService } from '../service/PacienteService';
 
-const service = new PacienteService();  
 
 export class PacienteController {
-    async listarPacientes(req: Request, res: Response) {
+    private service: PacienteService;
+
+    constructor (service: PacienteService) {
+        this.service = service;
+    }
+
+    listarPacientes = async (req: Request, res: Response) => {
         try {
-            const pacientes = await service.listarPacientes();
-            return res.status(200).json(pacientes);
+            const pacientes = await this.service.listarPacientes();
+            res.status(200).json(pacientes);
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unexpected error';
-            return res.status(500).json({ message: errorMessage });
+            res.status(500).json({ error: 'Erro ao listar pacientes' });
         }
     }
 
-    async buscarPacientePorId(req: Request, res: Response) {
+    buscarPacientePorId = async (req: Request, res: Response) => {
+        const { id } = req.params;
         try {
-            const { id } = req.params;
-            const paciente = await service.buscarPacientePorId(Number(id));
+            const paciente = await this.service.buscarPacientePorId(parseInt(id));
             if (!paciente) {
-                return res.status(404).json({ message: 'Paciente não encontrado' });
+                return res.status(404).json({ error: 'Paciente não encontrado' });
             }
-            return res.status(200).json(paciente);
+            res.status(200).json(paciente);
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unexpected error';
-            return res.status(500).json({ message: errorMessage });
+            res.status(500).json({ error: 'Erro ao buscar paciente' });
         }
     }
-    async criarPaciente(req: Request, res: Response) {
+
+    criarPaciente = async (req: Request, res: Response) => {
         try {
-            const paciente = req.body;
-            const novoPaciente = await service.criarPaciente(paciente);
-            return res.status(201).json(novoPaciente);
+            const paciente = await this.service.criarPaciente(req.body);
+            res.status(201).json(paciente);
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unexpected error';
-            return res.status(500).json({ message: errorMessage });
+            res.status(500).json({ error: 'Erro ao criar paciente' });
         }
     }
-    async atualizarPaciente(req: Request, res: Response) {
+
+    atualizarPaciente = async (req: Request, res: Response) => {
+        const { id } = req.params;
         try {
-            const { id } = req.params;
-            const paciente = req.body;
-            const pacienteAtualizado = await service.atualizarPaciente(Number(id), paciente);
-            return res.status(200).json(pacienteAtualizado);
+            const paciente = await this.service.atualizarPaciente(parseInt(id), req.body);
+            if (!paciente) {
+                return res.status(404).json({ error: 'Paciente não encontrado' });
+            }
+            res.status(200).json(paciente);
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unexpected error';
-            return res.status(500).json({ message: errorMessage });
+            res.status(500).json({ error: 'Erro ao atualizar paciente' });
         }
     }
-    async deletarPaciente(req: Request, res: Response) {
+
+    deletarPaciente = async (req: Request, res: Response) => {
+        const { id } = req.params;
         try {
-            const { id } = req.params;
-            await service.deletarPaciente(Number(id));
-            return res.status(204).send();
+            const paciente = await this.service.deletarPaciente(parseInt(id));
+            if (!paciente) {
+                return res.status(404).json({ error: 'Paciente não encontrado' });
+            }
+            res.status(204).send();
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unexpected error';
-            return res.status(500).json({ message: errorMessage });
+            res.status(500).json({ error: 'Erro ao deletar paciente' });
         }
-    }}
+    }
+}
