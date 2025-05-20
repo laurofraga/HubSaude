@@ -1,65 +1,52 @@
 import {Request, Response} from 'express';
 import { EstudoClinicoService } from '../service/EstudoClinicoService';
 
-const service = new EstudoClinicoService();
-
 export class EstudoClinicoController {
-    async listarEstudos(req: Request, res: Response) {
-        try {
-            const estudos = await service.listarEstudos();
-            res.status(200).json(estudos);
-        } catch (error) {
-            res.status(500).json({ message: "Erro ao listar estudos clínicos", error });
-        }
-    }
+  constructor(private service: EstudoClinicoService) {}
 
-    async buscarPorId(req: Request, res: Response) {
-        try {
-            const { id } = req.params;
-            const estudo = await service.buscarPorId(parseInt(id));
-            if (estudo) {
-                res.status(200).json(estudo);
-            } else {
-                res.status(404).json({ message: "Estudo clínico não encontrado" });
-            }
-        } catch (error) {
-            res.status(500).json({ message: "Erro ao buscar estudo clínico", error });
-        }
+     listarEstudos = async (_req: Request, res: Response): Promise<void> => {
+    try {
+      const estudos = await this.service.listarEstudos();
+      res.status(200).json(estudos);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Erro ao listar estudos clínicos.' });
     }
+  };
 
-    async criarEstudo(req: Request, res: Response) {
-        try {
-            const estudo = req.body;
-            const novoEstudo = await service.criarEstudo(estudo);
-            res.status(201).json(novoEstudo);
-        } catch (error) {
-            res.status(500).json({ message: "Erro ao criar estudo clínico", error });
-        }   
+    buscarEstudoPorId = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const estudo = await this.service.buscarEstudoPorId(Number(req.params.id));
+      res.status(200).json(estudo);
+    } catch (err: any) {
+      res.status(404).json({ error: err.message || 'Estudo clínico não encontrado.' });
     }
+  };
 
-    async atualizarEstudo(req: Request, res: Response) {
-        try {
-            const { id } = req.params;
-            const estudo = req.body;
-            const estudoAtualizado = await service.atualizarEstudo(parseInt(id), estudo);
-            if (estudoAtualizado) {
-                res.status(200).json(estudoAtualizado);
-            } else {
-                res.status(404).json({ message: "Estudo clínico não encontrado" });
-            }
-        } catch (error) {
-            res.status(500).json({ message: "Erro ao atualizar estudo clínico", error });
-        }
+   criarEstudo = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const novoEstudo = await this.service.criarEstudo(req.body);
+      res.status(201).json(novoEstudo);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
     }
+  };
 
-    async deletarEstudo(req: Request, res: Response) {
-        try {
-            const { id } = req.params;
-            await service.deletarEstudo(parseInt(id));
-            res.status(204).send();
-        } catch (error) {
-            res.status(500).json({ message: "Erro ao deletar estudo clínico", error });
-        }
+     atualizarEstudo = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const estudoAtualizado = await this.service.atualizarEstudo(Number(req.params.id), req.body);
+      res.status(200).json(estudoAtualizado);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
     }
+  };
+
+  deletarEstudo = async (req: Request, res: Response): Promise<void> => {
+    try {
+      await this.service.deletarEstudo(Number(req.params.id));
+      res.status(204).send();
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  };
 }
 
