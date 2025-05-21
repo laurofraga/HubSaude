@@ -4,7 +4,8 @@ import {
     Column, 
     ManyToOne, 
     CreateDateColumn, 
-    UpdateDateColumn 
+    UpdateDateColumn,
+    JoinColumn
 } from "typeorm";
 
 import { EstudoClinico } from "./EstudoClinico";
@@ -21,11 +22,13 @@ export class ParticipacaoEstudoClinico {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @ManyToOne(() => EstudoClinico, (estudoClinico) => estudoClinico.participacoes, {onDelete: "CASCADE", eager: false, nullable: false })
-    estudoClinico!: EstudoClinico;
+    @ManyToOne(() => EstudoClinico, e => e.participacoes, { eager: true })
+    @JoinColumn({ name: "estudoClinicoId" })
+  estudoClinico!: EstudoClinico;
 
-    @ManyToOne(() => Paciente, (paciente) => paciente.participacoes, {onDelete: "CASCADE", eager: false, nullable: false })
-    paciente!: Paciente;
+    @ManyToOne(() => Paciente, p => p.participacoes, { eager: true })
+    @JoinColumn({ name: "pacienteId" })
+  paciente!: Paciente;
 
     @Column({ type: "enum", enum: StatusParticipacao, enumName: "status_participacao_enum" })
     status?: StatusParticipacao;
