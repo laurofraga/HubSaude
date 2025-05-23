@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from "body-parser";
-import authRouter from "./../auth/auth.controller";
+import authRouter from "./auth/auth.controller";
 import centroRoutes from './routes.ts/centro.routes';
 import estudoClinicoRoutes from "./routes.ts/estudoClinico.routes";
 import pacienteRoutes from "./routes.ts/paciente.routes";

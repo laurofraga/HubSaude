@@ -7,8 +7,8 @@ export class CentroClinicoService{
     private centroClinicoRepository = AppDataSource.getRepository(CentroClinico);
     
 
-    async createCentroClinico(nome: string, endereco: string, telefone: string): Promise<CentroClinico> {
-          if (!email) throw new Error("Email é obrigatório.");
+    async createCentroClinico(nome: string, endereco: string, telefone: string, email: string, senha: string): Promise<CentroClinico> {
+        if (!email) throw new Error("Email é obrigatório.");
         if (!senha) throw new Error("Senha é obrigatória.");
 
         const centroExistente = await this.centroClinicoRepository.findOneBy({ email });

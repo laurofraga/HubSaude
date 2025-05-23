@@ -26,8 +26,8 @@ export class CentroClinicoController {
   
    criarCentro = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { nome, endereco, telefone } = req.body;
-      const novoCentro = await this.service.createCentroClinico(nome, endereco, telefone);
+      const { nome, endereco, telefone, email, senha } = req.body;
+      const novoCentro = await this.service.createCentroClinico(nome, endereco, telefone, email, senha);
       res.status(201).json(novoCentro);
     } catch (err: any) {
       res.status(400).json({ error: err.message });
