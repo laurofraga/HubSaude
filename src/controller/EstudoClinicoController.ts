@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+
 import { EstudoClinicoService } from '../service/EstudoClinicoService';
 
 export class EstudoClinicoController {
@@ -12,7 +13,7 @@ export class EstudoClinicoController {
       res.status(500).json({ error: err.message || 'Erro ao listar estudos clínicos.' });
     }
   };
-
+  
     buscarEstudoPorId = async (req: Request, res: Response): Promise<void> => {
     try {
       const estudo = await this.service.buscarPorId(Number(req.params.id));
@@ -48,5 +49,16 @@ export class EstudoClinicoController {
       res.status(400).json({ error: err.message });
     }
   };
+  
+   buscarEstudosPorPaciente = async (req: Request, res: Response) => {
+    try {
+      const pacienteId = parseInt(req.params.pacienteId);
+      const estudos = await this.service.buscarEstudosCompatíveis(Number(req.params.id));
+      res.status(200).json(estudos);
+    } catch (error: any) {
+      res.status(400).json({ erro: error.message });
+    }
+  };
 }
+
 

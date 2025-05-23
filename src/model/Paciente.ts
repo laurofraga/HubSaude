@@ -27,8 +27,8 @@ export class Paciente {
     @Column()
     senha?: string;
 
-    @Column()
-    condicoes?: string;
+    @Column( "text", { array: true })
+    condicoes?: string[];
 
     @Column()
     endereco?: string;

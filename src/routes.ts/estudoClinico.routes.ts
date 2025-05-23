@@ -11,5 +11,6 @@ router.get('/:id', controller.buscarEstudoPorId);
 router.post('/', controller.criarEstudo);
 router.put('/:id', controller.atualizarEstudo);
 router.delete('/:id', controller.deletarEstudo);
+router.get('/paciente/:pacienteId', controller.buscarEstudosPorPaciente);
 
 export default router;

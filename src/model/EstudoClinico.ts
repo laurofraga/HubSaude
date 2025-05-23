@@ -20,6 +20,12 @@ export class EstudoClinico {
     @Column("text")
     descrica?: string;
 
+    @Column("text", { array: true })
+    criteriosInclusao?: string[];
+
+    @Column("text", { array: true })
+    criteriosExclusao?: string[];
+
     @Column({type: "enum", enum: FaseEstudo})
     fase?: FaseEstudo;
 
