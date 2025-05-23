@@ -1,5 +1,6 @@
 import { AppDataSource } from "../data-source";
 import { CentroClinico } from "../model/CentroClinico";
+import * as bcrypt from 'bcryptjs';
 
 export class CentroClinicoService{
     
@@ -7,12 +8,23 @@ export class CentroClinicoService{
     
 
     async createCentroClinico(nome: string, endereco: string, telefone: string): Promise<CentroClinico> {
-        const centroClinico = new CentroClinico();
-        centroClinico.nome = nome;
-        centroClinico.endereco = endereco;
-        centroClinico.telefone = telefone;
+          if (!email) throw new Error("Email é obrigatório.");
+        if (!senha) throw new Error("Senha é obrigatória.");
 
-        return await this.centroClinicoRepository.save(centroClinico);
+        const centroExistente = await this.centroClinicoRepository.findOneBy({ email });
+        if (centroExistente) throw new Error("Centro já cadastrado com esse email.");
+
+        const senhaHash = await bcrypt.hash(senha, 10);
+
+        const centro = this.centroClinicoRepository.create({
+            nome,
+            endereco,
+            telefone,
+            email,
+            senha: senhaHash
+        });
+
+        return await this.centroClinicoRepository.save(centro);
     }
 
     async getCentroClinicos(): Promise<CentroClinico[]> {

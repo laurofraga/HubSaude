@@ -15,16 +15,21 @@ export class PacienteService {
     }
 
     async criarPaciente(paciente: Paciente){
-        const pacienteExistente = await this.repo.findOneBy({email: paciente.email});
-        if(pacienteExistente){
-            throw new Error("Paciente já cadastrado com esse email.");
-        }
-        if (!paciente.senha) {
-            throw new Error("Senha é obrigatória.");
-        }
-        paciente.senha = await bcrypt.hash(paciente.senha, 10);
-        return await this.repo.save(paciente);
+    if (!paciente.email) {
+        throw new Error("Email é obrigatório.");
     }
+    if (!paciente.senha) {
+        throw new Error("Senha é obrigatória.");
+    }
+
+    const pacienteExistente = await this.repo.findOneBy({email: paciente.email});
+    if(pacienteExistente){
+        throw new Error("Paciente já cadastrado com esse email.");
+    }
+
+    paciente.senha = await bcrypt.hash(paciente.senha, 10);
+    return await this.repo.save(paciente);
+}
 
     async atualizarPaciente(id: number, paciente: Paciente){
         const pacienteExistente = await this.repo.findOneBy({id});

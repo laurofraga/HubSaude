@@ -10,6 +10,12 @@ export class CentroClinico {
     nome?: string ;
 
     @Column()
+    email?: string;
+
+    @Column()
+    senha?: string;
+
+    @Column()
     endereco?: string;
 
     @Column()
