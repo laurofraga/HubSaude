@@ -1,7 +1,7 @@
 import * as bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { AppDataSource } from '../data-source';
-import { Paciente } from '../model/Paciente';
+import { Paciente, Sexo } from '../model/Paciente';
 import { CentroClinico } from '../model/CentroClinico';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -30,32 +30,40 @@ export class AuthService {
     throw new Error("Credenciais inválidas.");
   }
 
-  async registerPaciente(nome: string, email: string, senha: string): Promise<Paciente> {
-  const pacienteExistente = await this.pacienteRepo.findOneBy({ email });
-  if (pacienteExistente) {
-    throw new Error("Paciente já cadastrado com esse email.");
-  }
+  async registerPaciente(
+  nome: string,
+  email: string,
+  senha: string,
+  idade: number,
+  sexo: Sexo,
+  condicoes: string[],
+  endereco: string,
+): Promise<Paciente> {
+  const existente = await this.pacienteRepo.findOneBy({ email });
+  if (existente) throw new Error('Paciente já cadastrado com esse email.');
 
   const paciente = new Paciente();
   paciente.nome = nome;
   paciente.email = email;
   paciente.senha = await bcrypt.hash(senha, 10);
+  paciente.idade = idade;
+  paciente.sexo = sexo;
+  paciente.condicoes = condicoes;
+  paciente.endereco = endereco;
 
-  return await this.pacienteRepo.save(paciente);
+  return this.pacienteRepo.save(paciente);
 }
 
-async registerCentroClinico(nome: string, email: string, senha: string): Promise<CentroClinico> {
-  const centroExistente = await this.centroRepo.findOneBy({ email });
-  if (centroExistente) {
-    throw new Error("Centro clínico já cadastrado com esse email.");
-  }
 
-  const centro = new CentroClinico();
-  centro.nome = nome;
-  centro.email = email;
-  centro.senha = await bcrypt.hash(senha, 10);
-
-  return await this.centroRepo.save(centro);
+async registerCentroClinico(nome: string, email: string, senha: string, telefone: string, endereco: string) {
+  const novoCentro = new CentroClinico();
+  novoCentro.nome = nome;
+  novoCentro.email = email;
+  novoCentro.senha = await bcrypt.hash(senha, 10);
+  novoCentro.telefone = telefone;
+  novoCentro.endereco = endereco;
+  return await this.centroRepo.save(novoCentro);
 }
+
 }
         

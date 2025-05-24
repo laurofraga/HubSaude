@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     username : "postgres",
     password: "lauro1234",
     database: "HubSaude",
-    synchronize: false,
+    synchronize: true,
     logging: false,
     entities: [CentroClinico, EstudoClinico, Paciente, ParticipacaoEstudoClinico],
     subscribers: [],
