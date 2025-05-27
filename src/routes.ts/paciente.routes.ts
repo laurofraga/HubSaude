@@ -6,6 +6,7 @@ const router = Router();
 const service = new PacienteService();
 const controller = new PacienteController(service);
 
+router.get('/:id/home', controller.getHome);
 router.get("/", controller.listarPacientes);
 router.get("/:id", controller.buscarPacientePorId);
 router.post("/", controller.criarPaciente);

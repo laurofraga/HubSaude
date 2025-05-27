@@ -6,6 +6,17 @@ const sevice = new CentroClinicoService();
 export class CentroClinicoController {
     constructor(private service: CentroClinicoService) {}
 
+  getHome = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const data = await this.service.getHomeData(id);
+      res.status(200).json(data);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Erro ao obter dados do centro clínico.' });
+    }
+  }
+
+
      listarCentros = async (_req: Request, res: Response): Promise<void> => {
     try {
       const centros = await this.service.getCentroClinicos();
