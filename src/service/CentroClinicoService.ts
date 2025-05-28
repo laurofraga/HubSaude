@@ -1,8 +1,8 @@
 import { AppDataSource } from "../data-source";
 import { CentroClinico } from "../model/CentroClinico";
-import { ParticipacaoEstudoClinico } from "model/ParticipacaoEstudo";
+import { ParticipacaoEstudoClinico } from "../model/ParticipacaoEstudo";
 import * as bcrypt from 'bcryptjs';
-import { EstudoClinico } from "model/EstudoClinico";
+import { EstudoClinico } from "../model/EstudoClinico";
 import { EstudoClinicoService } from "./EstudoClinicoService";
 
 export class CentroClinicoService{

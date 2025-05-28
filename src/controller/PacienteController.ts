@@ -12,7 +12,7 @@ export class PacienteController {
     getHome = async ( req: Request, res: Response): Promise<void> => {
       try {
         const { id } = req.params;
-        const data = await this.service.getHomeData(id);
+        const data = await this.service.getHomeData(Number(id));
         res.status(200).json(data);
     }
       catch (error: any) {

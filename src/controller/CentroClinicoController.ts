@@ -9,7 +9,7 @@ export class CentroClinicoController {
   getHome = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      const data = await this.service.getHomeData(id);
+      const data = await this.service.getHomeData(Number(id));
       res.status(200).json(data);
     } catch (err: any) {
       res.status(500).json({ error: err.message || 'Erro ao obter dados do centro clínico.' });
