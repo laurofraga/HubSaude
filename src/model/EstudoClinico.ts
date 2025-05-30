@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn} from "typeorm";
 import { CentroClinico } from "./CentroClinico";
 import {ParticipacaoEstudoClinico} from "./ParticipacaoEstudo";
 
@@ -35,8 +35,9 @@ export class EstudoClinico {
     @Column()
     dataFim?: Date;
 
-    @ManyToOne(() => CentroClinico, (centroClinico) => centroClinico.estudosClinicos)
-    centroClinico?: CentroClinico;
+    @ManyToOne(() => CentroClinico, c => c.estudosClinicos, { eager: true, nullable: false })
+    @JoinColumn({ name: "centroClinicoId" })
+centroClinico!: CentroClinico;
 
 
     @OneToMany(() => ParticipacaoEstudoClinico, participacao => participacao.estudoClinico)

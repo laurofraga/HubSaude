@@ -25,8 +25,7 @@ export class EstudoClinicoController {
 
    criarEstudo = async (req: Request, res: Response): Promise<void> => {
     try {
-      const novoEstudo = await this.service.criarEstudo(req.body);
-      res.status(201).json(novoEstudo);
+      await this.service.criarEstudo(req, res);
     } catch (err: any) {
       res.status(400).json({ error: err.message });
     }

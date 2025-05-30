@@ -1,10 +1,12 @@
 import { AppDataSource } from "../data-source";
 import { EstudoClinico } from "../model/EstudoClinico";
 import { Paciente } from "../model/Paciente";
+import { CentroClinico } from "../model/CentroClinico";
 
 export class EstudoClinicoService {
     private estudoRepo = AppDataSource.getRepository(EstudoClinico);
     private pacienteRepo = AppDataSource.getRepository(Paciente);
+    private centroRepo = AppDataSource.getRepository(CentroClinico);
     estudoRepository: any;
     async listarEstudos(){
         return await this.estudoRepo.find({ relations: ["centroClinico"] });
@@ -14,9 +16,18 @@ export class EstudoClinicoService {
         return await this.estudoRepo.findOne({ where: { id }, relations: ["centroClinico"] });
     }
 
-    async criarEstudo(estudo: EstudoClinico) {
-        return await this.estudoRepo.save(estudo);
-    }
+    async criarEstudo(req: any, res: any) {
+      const { centroClinicoId, ...dados } = req.body;
+
+      const centro = await this.centroRepo.findOneBy({ id: centroClinicoId });
+      if (!centro) {
+        return res.status(404).json({ erro: "Centro não existe" });
+      }
+
+      const estudo = this.estudoRepo.create({ ...dados, centroClinico: centro });
+      const salvo  = await this.estudoRepo.save(estudo);
+      return res.status(201).json(salvo);
+}
 
     async atualizarEstudo(id: number, estudo: EstudoClinico) {
         await this.estudoRepo.update(id, estudo);

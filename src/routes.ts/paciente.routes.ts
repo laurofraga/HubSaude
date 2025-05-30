@@ -13,4 +13,4 @@ router.put("/:id", controller.atualizarPaciente);
 router.delete("/:id", controller.deletarPaciente);
 router.get("/", controller.listarPacientes);
 
-export default router;
+export default router

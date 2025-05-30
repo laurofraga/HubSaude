@@ -7,7 +7,7 @@ const service = new CentroClinicoService();
 const controller = new CentroClinicoController(service);
 
 
-router.get('/:id/home', controller.getHome);
+router.get('/home/:id', controller.getHome);
 router.get('/', controller.listarCentros);
 router.get('/:id', controller.buscarCentroPorId);
 router.post('/', controller.criarCentro);
