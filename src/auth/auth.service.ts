@@ -12,23 +12,23 @@ export class AuthService {
   private centroRepo = AppDataSource.getRepository(CentroClinico);
   private pacienteRepo = AppDataSource.getRepository(Paciente);
 
-  async login(email: string, senha: string): Promise<{ token: string; tipo: string }> {
-    const centro = await this.centroRepo.findOneBy({ email });
+  async login(email: string, senha: string): Promise<{ token: string; tipo: string; user: { id: number } }> {
+  const centro = await this.centroRepo.findOneBy({ email });
 
-    if (centro && centro.senha && await bcrypt.compare(senha, centro.senha)) {
-      const token = jwt.sign({ id: centro.id, tipo: 'centro' }, JWT_SECRET, { expiresIn: '1h' });
-      return { token, tipo: 'centro' };
-    }
-
-    const paciente = await this.pacienteRepo.findOneBy({ email });
-
-    if (paciente && paciente.senha && await bcrypt.compare(senha, paciente.senha)) {
-      const token = jwt.sign({ id: paciente.id, tipo: 'paciente' }, JWT_SECRET, { expiresIn: '1h' });
-      return { token, tipo: 'paciente' };
-    }
-
-    throw new Error("Credenciais inválidas.");
+  if (centro && centro.senha && await bcrypt.compare(senha, centro.senha)) {
+    const token = jwt.sign({ id: centro.id, tipo: 'centro' }, JWT_SECRET, { expiresIn: '1h' });
+    return { token, tipo: 'centro', user: { id: centro.id! } };
   }
+
+  const paciente = await this.pacienteRepo.findOneBy({ email });
+
+  if (paciente && paciente.senha && await bcrypt.compare(senha, paciente.senha)) {
+    const token = jwt.sign({ id: paciente.id, tipo: 'paciente' }, JWT_SECRET, { expiresIn: '1h' });
+    return { token, tipo: 'paciente', user: { id: paciente.id! } };
+  }
+
+  throw new Error("Credenciais inválidas.");
+}
 
   async registerPaciente(
   nome: string,
