@@ -18,12 +18,14 @@ export class EstudoClinicoService {
 
     async criarEstudo(req: any, res: any) {
       const { centroClinicoId, ...dados } = req.body;
+      console.log(" Dados recebidos no backend:", req.body);
 
       const centro = await this.centroRepo.findOneBy({ id: centroClinicoId });
+      console.log("Centro encontrado:", centro);
       if (!centro) {
         return res.status(404).json({ erro: "Centro não existe" });
       }
-
+      
       const estudo = this.estudoRepo.create({ ...dados, centroClinico: centro });
       const salvo  = await this.estudoRepo.save(estudo);
       return res.status(201).json(salvo);
