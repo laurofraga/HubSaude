@@ -13,6 +13,7 @@ export class EstudoClinicoService {
     }
 
     async buscarPorId(id: number) {
+      console.log('Buscando estudo com ID:', id);
         return await this.estudoRepo.findOne({ where: { id }, relations: ["centroClinico"] });
     }
 

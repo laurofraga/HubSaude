@@ -15,12 +15,16 @@ export class EstudoClinicoController {
   };
   
     buscarEstudoPorId = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const estudo = await this.service.buscarPorId(Number(req.params.id));
-      res.status(200).json(estudo);
-    } catch (err: any) {
-      res.status(404).json({ error: err.message || 'Estudo clínico não encontrado.' });
-    }
+      try {
+       const id = Number(req.params.id);
+    const estudo = await this.service.buscarPorId(id);
+
+    if (!estudo) {
+      res.status(404).json({ error: 'Estudo clínico não encontrado.'});
+      return;
+    }}catch (err: any) {
+    res.status(500).json({ error: err.message || 'Erro ao buscar estudo.' });
+    } 
   };
 
    criarEstudo = async (req: Request, res: Response): Promise<void> => {
@@ -51,7 +55,7 @@ export class EstudoClinicoController {
   
    buscarEstudosPorPaciente = async (req: Request, res: Response) => {
     try {
-      const pacienteId = parseInt(req.params.pacienteId);
+      
       const estudos = await this.service.buscarEstudosCompatíveis(Number(req.params.id));
       res.status(200).json(estudos);
     } catch (error: any) {

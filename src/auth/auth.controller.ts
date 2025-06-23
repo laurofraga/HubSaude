@@ -9,6 +9,7 @@ const authService = new AuthService();
 
 
 router.post('/login', async (req, res) => {
+  console.log('Requisição recebida em /login:', req.body);
   const { email, senha, tipo } = req.body;
   try {
     const result = await authService.login(email, senha);

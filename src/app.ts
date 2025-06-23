@@ -6,6 +6,7 @@ import estudoClinicoRoutes from "./routes.ts/estudoClinico.routes";
 import pacienteRoutes from "./routes.ts/paciente.routes";
 import participacaoRoutes from "./routes.ts/participacaoEstudo.routes";
 import * as dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -13,7 +14,15 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors({
+  origin: 'http://localhost:4200',
+  credentials: true  
+}));
 app.use(express.json());
+
+app.get('/teste-proxy', (req, res) => {
+  res.json({ mensagem: 'Proxy funcionando!' });
+});
 app.use('/centros', centroRoutes);
 app.use('/estudos', estudoClinicoRoutes);
 app.use('/pacientes', pacienteRoutes);
