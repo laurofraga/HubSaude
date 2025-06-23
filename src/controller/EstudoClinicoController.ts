@@ -22,7 +22,9 @@ export class EstudoClinicoController {
     if (!estudo) {
       res.status(404).json({ error: 'Estudo clínico não encontrado.'});
       return;
-    }}catch (err: any) {
+    }
+    res.status(200).json(estudo);}
+    catch (err: any) {
     res.status(500).json({ error: err.message || 'Erro ao buscar estudo.' });
     } 
   };
