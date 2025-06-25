@@ -40,33 +40,4 @@ export class EstudoClinicoService {
     async deletarEstudo(id: number) {
         await this.estudoRepo.delete(id);
     }
-    
-  buscarEstudosCompatíveis = async (pacienteId: number) => {
-    const paciente = await this.pacienteRepo.findOneBy({ id: pacienteId });
-
-    if (!paciente) {
-      throw new Error("Paciente não encontrado.");
-    }
-
-    const estudos = await this.estudoRepository.find();
-
-    return estudos.filter((estudo: EstudoClinico) => {
-      const condicoesPaciente = paciente.condicoes || [];
-
-      const criteriosInclusao = estudo.criteriosInclusao || [];
-      const criteriosExclusao = estudo.criteriosExclusao || [];
-
-      
-      const incluiCondicao = condicoesPaciente.some(cond =>
-        criteriosInclusao.includes(cond)
-      );
-
-     
-      const excluiCondicao = condicoesPaciente.some(cond =>
-        criteriosExclusao.includes(cond)
-      );
-
-      return incluiCondicao && !excluiCondicao;
-    });
-  };
 }

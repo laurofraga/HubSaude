@@ -6,7 +6,6 @@ const router = Router();
 const service = new EstudoClinicoService();
 const controller = new EstudoClinicoController(service);
 
-router.get('/paciente/:pacienteId', controller.buscarEstudosPorPaciente);
 router.get('/', controller.listarEstudos);
 router.get('/:id', controller.buscarEstudoPorId);
 router.post('/', controller.criarEstudo);

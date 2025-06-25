@@ -37,7 +37,7 @@ export class EstudoClinico {
 
     @ManyToOne(() => CentroClinico, c => c.estudosClinicos, { eager: true, nullable: false })
     @JoinColumn({ name: "centroClinicoId" })
-centroClinico!: CentroClinico;
+    centroClinico!: CentroClinico;
 
 
     @OneToMany(() => ParticipacaoEstudoClinico, participacao => participacao.estudoClinico)

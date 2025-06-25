@@ -6,6 +6,9 @@ import * as bcrypt from 'bcryptjs';
 
 
 export class PacienteService {
+    findOneBy(arg0: { id: number; }) {
+      throw new Error('Method not implemented.');
+    }
     private pacienteRepo = AppDataSource.getRepository(Paciente);
     private participacaoRepo = AppDataSource.getRepository(ParticipacaoEstudoClinico);
     private estudoRepo = AppDataSource.getRepository(EstudoClinico);
@@ -84,4 +87,33 @@ export class PacienteService {
         }
         return await this.pacienteRepo.delete(id);
     }
+
+    async buscarEstudosCompatíveis (pacienteId: number){
+    const paciente = await this.pacienteRepo.findOneBy({ id: pacienteId });
+
+    if (!paciente) {
+      throw new Error("Paciente não encontrado.");
+    }
+
+    const estudos = await this.estudoRepo.find();
+
+    return estudos.filter((estudo: EstudoClinico) => {
+      const condicoesPaciente = paciente.condicoes || [];
+
+      const criteriosInclusao = estudo.criteriosInclusao || [];
+      const criteriosExclusao = estudo.criteriosExclusao || [];
+
+      
+      const incluiCondicao = condicoesPaciente.some(cond =>
+        criteriosInclusao.includes(cond)
+      );
+
+     
+      const excluiCondicao = condicoesPaciente.some(cond =>
+        criteriosExclusao.includes(cond)
+      );
+
+      return incluiCondicao && !excluiCondicao;
+    });
+  };
 }

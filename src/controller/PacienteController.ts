@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PacienteService } from '../service/PacienteService';
+import { EstudoClinicoService } from '../service/EstudoClinicoService';
 
 
 export class PacienteController {
@@ -67,4 +68,20 @@ export class PacienteController {
       res.status(400).json({ message: error.message || 'Erro ao deletar paciente' });
     }
   };
+  
+  buscarEstudosPorPaciente = async (req: Request, res: Response) => {
+    try {
+      const pacienteId = Number(req.params.pacienteId);
+      if (isNaN(pacienteId)) {
+      res.status(400).json({ erro: "ID do paciente inválido." });
+      return; 
+    }
+      const estudos = await this.service.buscarEstudosCompatíveis(pacienteId);
+      res.status(200).json(estudos);
+    } catch (error: any) {
+      res.status(400).json({ erro: error.message });
+    }
+  };
+    
+ 
 }

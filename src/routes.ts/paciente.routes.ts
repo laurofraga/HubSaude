@@ -13,4 +13,5 @@ router.put("/:id", controller.atualizarPaciente);
 router.delete("/:id", controller.deletarPaciente);
 router.get("/", controller.listarPacientes);
 
-export default router
+router.get('/estudos-compativeis/:pacienteId', controller.buscarEstudosPorPaciente);;
+export default router;
