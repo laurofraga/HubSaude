@@ -6,40 +6,43 @@ import * as bcrypt from 'bcryptjs';
 
 
 export class PacienteService {
-    findOneBy(arg0: { id: number; }) {
-      throw new Error('Method not implemented.');
-    }
     private pacienteRepo = AppDataSource.getRepository(Paciente);
     private participacaoRepo = AppDataSource.getRepository(ParticipacaoEstudoClinico);
     private estudoRepo = AppDataSource.getRepository(EstudoClinico);
 
     getHomeData = async (pacienteId: number) => {
-        const paciente = await this.pacienteRepo.findOneBy({ id: pacienteId });
-        if (!paciente) {
-            throw new Error("Paciente não encontrado.");
-        }
-        
-        const participacoes = await this.participacaoRepo.find
-        ({ where: { paciente: { id: pacienteId } } 
-        , relations: ['estudoClinico'] });
-
-        const estudos = await Promise.all(
-            participacoes.map(async (p) => {
-               const estudo = p.estudoClinico;
-                return {
-                     ...estudo,
-                     participacao: p,
-                     fase: estudo?.fase,
-                     dataEntrada: p.dataParticipacao.toISOString().split('T')[0],
-                };
-            }) 
-        );
-        return {
-            paciente,
-            participacoes,
-            estudos,
-        };
+       const paciente = await this.pacienteRepo.findOneBy({ id: pacienteId });
+    if (!paciente) {
+        throw new Error("Paciente não encontrado.");
     }
+    
+    const participacoes = await this.participacaoRepo.find({ 
+        where: { paciente: { id: pacienteId } },
+        relations: ['estudoClinico'] 
+    });
+    
+    const estudosMap = new Map<number, any>();
+
+    for (const p of participacoes) {
+        const estudo = p.estudoClinico;
+
+
+        if (estudo && typeof estudo.id === 'number' && !estudosMap.has(estudo.id)) {
+            estudosMap.set(estudo.id, {
+                ...estudo,
+                participacao: p,
+                 
+                dataEntrada: p.dataParticipacao.toISOString().split('T')[0],
+            });
+        }
+    }
+    const estudos = Array.from(estudosMap.values());
+    return {
+        paciente,
+        participacoes, 
+        estudos,
+    };
+}
 
     async listarPacientes(){
         return await this.pacienteRepo.find();
