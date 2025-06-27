@@ -6,6 +6,7 @@ const router = Router();
 const service = new ParticipacaoEstudoService();
 const controller = new ParticipacaoEstudoController(service);
 
+router.get('/verificar', controller.verificarParticipacao);
 router.get('/', controller.listarParticipacoes);
 router.get('/:id', controller.buscarParticipacaoPorId);
 router.post('/', controller.criarParticipacao);

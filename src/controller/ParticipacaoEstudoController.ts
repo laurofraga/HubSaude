@@ -52,4 +52,28 @@ export class ParticipacaoEstudoController {
       res.status(400).json({ error: error.message });
     }
   };
+  verificarParticipacao = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { pacienteId, estudoId } = req.query;
+
+        if (!pacienteId || !estudoId) {
+            res.status(400).json({ error: 'pacienteId e estudoId são obrigatórios.' });
+            return;
+        }
+
+        const participacao = await this.service.buscarPorPacienteEEstudo(
+            Number(pacienteId), 
+            Number(estudoId)
+        );
+
+        if (participacao) {
+            res.status(200).json(participacao);
+        } else {
+            
+            res.status(404).json({ message: 'Nenhuma participação encontrada.' });
+        }
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+};
 }

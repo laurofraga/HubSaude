@@ -35,4 +35,12 @@ export class ParticipacaoEstudoService {
         }
         return null;
     }
+    async buscarPorPacienteEEstudo(pacienteId: number, estudoId: number) {
+    return await this.repo.findOne({
+        where: {
+            paciente: { id: pacienteId },
+            estudoClinico: { id: estudoId }
+        }
+    });
+}
 }
