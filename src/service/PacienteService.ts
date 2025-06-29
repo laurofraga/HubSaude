@@ -98,25 +98,39 @@ export class PacienteService {
       throw new Error("Paciente não encontrado.");
     }
 
+
+
+    const participacoesAtuais = await this.participacaoRepo.find({
+        where: { paciente: { id: pacienteId } },
+        select: { estudoClinico: { id: true } }, 
+        relations: ['estudoClinico']
+    });
+
+    const idsDosEstudosParticipantes = new Set(
+        participacoesAtuais.map(p => p.estudoClinico?.id).filter(id => id != null)
+    );
+ 
     const estudos = await this.estudoRepo.find();
 
+
     return estudos.filter((estudo: EstudoClinico) => {
-      const condicoesPaciente = paciente.condicoes || [];
-
-      const criteriosInclusao = estudo.criteriosInclusao || [];
-      const criteriosExclusao = estudo.criteriosExclusao || [];
-
+       
+        if (estudo.id && idsDosEstudosParticipantes.has(estudo.id)) {
+            return false;
+        }
       
-      const incluiCondicao = condicoesPaciente.some(cond =>
-        criteriosInclusao.includes(cond)
-      );
+        const condicoesPaciente = paciente.condicoes || [];
+        const criteriosInclusao = estudo.criteriosInclusao || [];
+        const criteriosExclusao = estudo.criteriosExclusao || [];
 
-     
-      const excluiCondicao = condicoesPaciente.some(cond =>
-        criteriosExclusao.includes(cond)
-      );
+        const incluiCondicao = condicoesPaciente.some(cond =>
+            criteriosInclusao.includes(cond)
+        );
 
-      return incluiCondicao && !excluiCondicao;
+        const excluiCondicao = condicoesPaciente.some(cond =>
+            criteriosExclusao.includes(cond)
+        );
+
+        return incluiCondicao && !excluiCondicao;
     });
-  };
-}
+}}
