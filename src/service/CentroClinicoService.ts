@@ -4,6 +4,7 @@ import { ParticipacaoEstudoClinico } from "../model/ParticipacaoEstudo";
 import * as bcrypt from 'bcryptjs';
 import { EstudoClinico } from "../model/EstudoClinico";
 import { EstudoClinicoService } from "./EstudoClinicoService";
+import { In } from "typeorm";
 
 export class CentroClinicoService{
     
@@ -39,25 +40,31 @@ export class CentroClinicoService{
         const estudos = await this.estudoRepo.find({
       where: { centroClinico: { id: centroId } },
     });
+          if (estudos.length === 0) {
+            return { centro, estudos: [] };
+        }
 
-        const estudosComDados = await Promise.all(
-            estudos.map(async (estudo): Promise <any> => {
-                const participacoes = await this.participacaoRepo.find({ 
-                    where: { estudoClinico: { id: estudo.id } },
-                    relations: ['paciente']
-                });
-                
-                const totalPacientes = participacoes.length;
-                const fases = [estudo.fase];
-                return {
-                    ...estudo,
-                    totalPacientes,
-                    fases,
-                    participacoes
-                };
-            })
-        );
+        const estudoIds = estudos.map(estudo => estudo.id);
 
+        const todasAsParticipacoes = await this.participacaoRepo.find({
+            where: { estudoClinico: { id: In(estudoIds) } }, 
+            relations: ['estudoClinico'] 
+        });
+
+        const participacoesPorEstudo = new Map<number, number>();
+            for (const p of todasAsParticipacoes) {
+            if (p.estudoClinico?.id) {
+                const contagemAtual = participacoesPorEstudo.get(p.estudoClinico.id) || 0;
+                participacoesPorEstudo.set(p.estudoClinico.id, contagemAtual + 1);
+            }
+        }
+        const estudosComDados = estudos.map(estudo => {
+            const totalPacientes = estudo.id ? participacoesPorEstudo.get(estudo.id) || 0 : 0;
+            return {
+                ...estudo,
+                totalPacientes: totalPacientes
+            };
+        });
         return {
             centro,
             estudos: estudosComDados
