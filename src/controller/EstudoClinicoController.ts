@@ -30,12 +30,17 @@ export class EstudoClinicoController {
   };
 
    criarEstudo = async (req: Request, res: Response): Promise<void> => {
-    try {
-      await this.service.criarEstudo(req, res);
-    } catch (err: any) {
-      res.status(400).json({ error: err.message });
+  try {
+    const { centroClinicoId, ...dadosEstudo } = req.body;
+    if (!centroClinicoId) {
+      throw new Error("centroClinicoId é obrigatório para criar um estudo.");
     }
-  };
+    const novoEstudo = await this.service.criarEstudo(dadosEstudo, centroClinicoId);
+    res.status(201).json(novoEstudo);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
      atualizarEstudo = async (req: Request, res: Response): Promise<void> => {
     try {

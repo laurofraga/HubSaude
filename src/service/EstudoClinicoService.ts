@@ -17,26 +17,34 @@ export class EstudoClinicoService {
         return await this.estudoRepo.findOne({ where: { id }, relations: ["centroClinico", "participacoes"] });
       }
 
-    async criarEstudo(req: any, res: any) {
-      const { centroClinicoId, ...dados } = req.body;
-      console.log(" Dados recebidos no backend:", req.body);
-
-      const centro = await this.centroRepo.findOneBy({ id: centroClinicoId });
-      console.log("Centro encontrado:", centro);
-      if (!centro) {
-        return res.status(404).json({ erro: "Centro não existe" });
-      }
-      
-      const estudo = this.estudoRepo.create({ ...dados, centroClinico: centro });
-      const salvo  = await this.estudoRepo.save(estudo);
-      return res.status(201).json(salvo);
-}
-
-    async atualizarEstudo(id: number, estudo: EstudoClinico) {
-        await this.estudoRepo.update(id, estudo);
-        return await this.buscarPorId(id);
+    async criarEstudo(dadosEstudo: Partial<EstudoClinico>, centroClinicoId: number): Promise<EstudoClinico> {
+        const centro = await this.centroRepo.findOneBy({ id: centroClinicoId });
+        if (!centro) {
+            throw new Error("Centro clínico não encontrado para associar ao estudo.");
+        }
+        const estudo = this.estudoRepo.create({
+            ...dadosEstudo,
+            centroClinico: centro
+        });
+        
+        return await this.estudoRepo.save(estudo);
     }
 
+     async atualizarEstudo(id: number, dadosAtualizacao: Partial<EstudoClinico>): Promise<EstudoClinico> {
+        const estudoExistente = await this.estudoRepo.findOneBy({ id });
+        if (!estudoExistente) {
+            throw new Error(`Estudo com ID ${id} não encontrado.`);
+        }
+        if ('descricao' in dadosAtualizacao && dadosAtualizacao.descricao !== undefined) {
+            (dadosAtualizacao as any).descrica = dadosAtualizacao.descricao;
+            delete dadosAtualizacao.descricao;
+        }
+        this.estudoRepo.merge(estudoExistente, dadosAtualizacao);
+        const estudoAtualizado = await this.estudoRepo.save(estudoExistente);
+        
+        return estudoAtualizado;
+    }
+    
     async deletarEstudo(id: number) {
         await this.estudoRepo.delete(id);
     }
