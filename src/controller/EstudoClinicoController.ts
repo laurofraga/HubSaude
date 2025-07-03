@@ -1,5 +1,4 @@
 import {Request, Response} from 'express';
-
 import { EstudoClinicoService } from '../service/EstudoClinicoService';
 
 export class EstudoClinicoController {
@@ -58,7 +57,17 @@ export class EstudoClinicoController {
     } catch (err: any) {
       res.status(400).json({ error: err.message });
     }
-  }; 
+  };
+  
+  listarParticipantesDoEstudo = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const estudoId = Number(req.params.id);
+    const participantes = await this.service.listarParticipantesPorEstudo(estudoId);
+    res.status(200).json(participantes);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || 'Erro ao listar participantes do estudo.' });
+  }
+};
 }
 
 

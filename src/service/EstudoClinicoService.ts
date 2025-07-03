@@ -2,11 +2,13 @@ import { AppDataSource } from "../data-source";
 import { EstudoClinico } from "../model/EstudoClinico";
 import { Paciente } from "../model/Paciente";
 import { CentroClinico } from "../model/CentroClinico";
+import { ParticipacaoEstudoClinico } from "../model/ParticipacaoEstudo";
 
 export class EstudoClinicoService {
     private estudoRepo = AppDataSource.getRepository(EstudoClinico);
     private pacienteRepo = AppDataSource.getRepository(Paciente);
     private centroRepo = AppDataSource.getRepository(CentroClinico);
+    private participacaoRepo = AppDataSource.getRepository(ParticipacaoEstudoClinico);
     estudoRepository: any;
     async listarEstudos(){
         return await this.estudoRepo.find({ relations: ["centroClinico"] });
@@ -48,4 +50,23 @@ export class EstudoClinicoService {
     async deletarEstudo(id: number) {
         await this.estudoRepo.delete(id);
     }
+
+    async listarParticipantesPorEstudo(estudoId: number) {
+  const participacoes = await this.participacaoRepo.find({
+    where: { estudoClinico: { id: estudoId } },
+    relations: ['paciente']
+  });
+
+  const dadosFormatados = participacoes.map(p => {
+    if (!p.paciente) return null; 
+    return {
+      nome: p.paciente.nome,
+      email: p.paciente.email,
+      condicoes: p.paciente.condicoes
+    };
+  }).filter(p => p !== null); 
+
+  return dadosFormatados;
+}
+
 }
