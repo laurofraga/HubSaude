@@ -3,6 +3,8 @@ import { EstudoClinico } from "../model/EstudoClinico";
 import { Paciente } from "../model/Paciente";
 import { CentroClinico } from "../model/CentroClinico";
 import { ParticipacaoEstudoClinico } from "../model/ParticipacaoEstudo";
+import { In } from "typeorm";
+
 
 export class EstudoClinicoService {
     private estudoRepo = AppDataSource.getRepository(EstudoClinico);
@@ -47,8 +49,17 @@ export class EstudoClinicoService {
         return estudoAtualizado;
     }
     
-    async deletarEstudo(id: number) {
-        await this.estudoRepo.delete(id);
+    async deletarEstudo(id: number): Promise<void> { 
+        const participacaoCount = await this.participacaoRepo.count({
+            where: { estudoClinico: { id: id } }
+        });
+        if (participacaoCount > 0) {
+            throw new Error("Não é possível excluir um estudo que possui participantes.");
+        }
+        const resultado = await this.estudoRepo.delete(id);
+        if (resultado.affected === 0) {
+            throw new Error(`Estudo com ID ${id} não encontrado para exclusão.`);
+        }
     }
 
     async listarParticipantesPorEstudo(estudoId: number) {
