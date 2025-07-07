@@ -20,7 +20,10 @@ export class ParticipacaoEstudoService {
 
     async criarParticipacao(dados: { pacienteId: number, estudoId: number }) {
         const { pacienteId, estudoId } = dados;
-
+        const participacaoExistente = await this.buscarPorPacienteEEstudo(pacienteId, estudoId);
+        if (participacaoExistente) {
+            throw new Error("Este paciente já está participando deste estudo.");
+        }
         const paciente = await this.pacienteRepo.findOneBy({ id: pacienteId });
         if (!paciente) {
             throw new Error(`Paciente com ID ${pacienteId} não encontrado.`);
