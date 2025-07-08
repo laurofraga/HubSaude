@@ -7,6 +7,7 @@ import pacienteRoutes from "./routes.ts/paciente.routes";
 import participacaoRoutes from "./routes.ts/participacaoEstudo.routes";
 import * as dotenv from 'dotenv';
 import cors from 'cors';
+import { authMiddleware } from "./auth/auth.middleware";
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ app.use(express.json());
 app.get('/teste-proxy', (req, res) => {
   res.json({ mensagem: 'Proxy funcionando!' });
 });
-app.use('/centros', centroRoutes);
+app.use('/centros', authMiddleware, centroRoutes);
 app.use('/estudos', estudoClinicoRoutes);
 app.use('/pacientes', pacienteRoutes);
 app.use('/participacoes', participacaoRoutes);
