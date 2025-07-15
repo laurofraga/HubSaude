@@ -8,9 +8,9 @@ import { ParticipacaoEstudoClinico } from "./model/ParticipacaoEstudo";
 export const AppDataSource = new DataSource({
     type : "postgres",
     host : "localhost",
-    port :5432,
+    port :5433,
     username : "postgres",
-    password: "lauro1234",
+    password: "123456",
     database: "HubSaude",
     synchronize: true,
     logging: false,

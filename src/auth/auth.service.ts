@@ -23,6 +23,7 @@ export class AuthService {
   const paciente = await this.pacienteRepo.findOneBy({ email });
 
   if (paciente && paciente.senha && await bcrypt.compare(senha, paciente.senha)) {
+    console.log('Segredo usado para ASSINAR o token:', process.env.JWT_SECRET);
     const token = jwt.sign({ id: paciente.id, tipo: 'paciente' }, JWT_SECRET, { expiresIn: '1h' });
     return { token, tipo: 'paciente', user: { id: paciente.id! } };
   }
