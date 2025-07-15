@@ -2,6 +2,7 @@ import { Router } from "express";
 import { CentroClinicoService } from "../service/CentroClinicoService";
 import { CentroClinicoController } from "../controller/CentroClinicoController";
 import { authMiddleware } from "../auth/auth.middleware";
+
 const router = Router();
 const service = new CentroClinicoService();
 const controller = new CentroClinicoController(service);
