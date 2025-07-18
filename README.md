@@ -121,7 +121,7 @@ A validação da aplicação foi realizada através de um processo contínuo de 
 - Fluxos de Acesso a Dados (GET): Teste de acesso a rotas protegidas com e sem o token de autorização, validando o funcionamento do authMiddleware.
 - Fluxos de Atualização (PUT) e Exclusão (DELETE): Teste das funcionalidades de edição e exclusão de entidades.
 
-#### Consolidação dos dados Coletatos
+#### Consolidação dos dados Coletados
 Os testes com o Postman foram cruciais para identificar e corrigir problemas de ambiente, configuração de CORS, lógica de autenticação e validações de negócio no backend antes da integração final com o frontend. Os testes de fluxo no frontend validaram a funcionalidade do HttpInterceptor, dos RouteGuards e a reatividade da interface às mudanças de estado, confirmando que os objetivos do projeto foram alcançados.
 
 ## Conclusões
