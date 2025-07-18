@@ -86,6 +86,12 @@ A solução foi implementada utilizando uma arquitetura desacoplada, com um fron
 
 #### Visão geral da Arquitetura
 
+<img width="2375" height="3840" alt="Image" src="https://github.com/user-attachments/assets/ebba2f83-0ed2-453e-ac0e-b0b083fcb65e" />
+
+<img width="1389" height="3840" alt="Image" src="https://github.com/user-attachments/assets/d18ec538-3c87-432b-a0be-ae1ae86045d2" />
+
+<img width="1152" height="700" alt="Image" src="https://github.com/user-attachments/assets/d0232d8a-9247-46e6-97f2-5728bafd30b7" />
+
 
 
 #### Camadas do backend
